@@ -25,9 +25,9 @@ def spec_task(name, specs)
 end
 
 desc "Run all examples"
-spec_task :spec, SPECS
+spec_task :spec1, SPECS
 spec_task :spec2, SPECS2
-task :spec => [:compile, :spec2]
+task :spec => [:compile, :spec1, :spec2]
 
 desc "Run all performance examples"
 spec_task 'spec:perf', PERF_SPECS
