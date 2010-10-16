@@ -47,7 +47,7 @@ rescue LoadError
     RUBY_VERSION =~ /(\d+.\d+)/
     require "#{Thin::ROOT}/#{$1}/thin_parser"
   elsif RUBY_PLATFORM =~ /java/ then
-    require 'java/jruby_thin'
+    require "#{Thin::ROOT}/thin/java/http_parser"
   end
 end
 
