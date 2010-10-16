@@ -21,6 +21,10 @@ module Thin
   def self.win?
     RUBY_PLATFORM =~ /mswin|mingw/
   end
+
+  def self.java?
+    RUBY_PLATFORM =~ /java/
+  end
   
   def self.linux?
     RUBY_PLATFORM =~ /linux/

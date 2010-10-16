@@ -216,7 +216,9 @@ module Thin
         trap('INT')  { stop! }
         trap('TERM') { stop! }
         unless Thin.win?
-          trap('QUIT') { stop }
+          unless Thin.java?
+            trap('QUIT') { stop }
+          end
           trap('HUP')  { restart }
         end
       end
