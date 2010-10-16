@@ -1,5 +1,6 @@
 RUBY_1_9 = RUBY_VERSION =~ /^1\.9/
-WIN      = (RUBY_PLATFORM =~ /mswin|cygwin/)
+WIN      = RUBY_PLATFORM =~ /mswin|cygwin/
+JRUBY    = RUBY_PLATFORM =~ /java/
 SUDO     = (WIN ? "" : "sudo")
 
 require 'rake'

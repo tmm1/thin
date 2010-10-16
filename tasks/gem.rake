@@ -6,7 +6,13 @@ task :clean => :clobber_package
 Thin::GemSpec = Gem::Specification.new do |s|
   s.name                  = Thin::NAME
   s.version               = Thin::VERSION::STRING
-  s.platform              = WIN ? Gem::Platform::CURRENT : Gem::Platform::RUBY
+  s.platform              = if WIN
+                              Gem::Platform::CURRENT
+                            elsif JRUBY
+                              'java'
+                            else
+                              Gem::Platform::RUBY
+                            end
   s.summary               = 
   s.description           = "A thin and fast web server"
   s.author                = "Marc-Andre Cournoyer"
@@ -23,6 +29,9 @@ Thin::GemSpec = Gem::Specification.new do |s|
   unless WIN
     s.add_dependency      'daemons',      '>= 1.0.9'
   end
+  if JRUBY
+    s.add_dependency      'mongrel',      '>= 1.1.5'
+  end
 
   s.files                 = %w(COPYING CHANGELOG README Rakefile) +
                             Dir.glob("{benchmark,bin,doc,example,lib,spec,tasks}/**/*") + 
@@ -30,6 +39,8 @@ Thin::GemSpec = Gem::Specification.new do |s|
   
   if WIN
     s.files              += ["lib/thin_parser.#{Config::CONFIG['DLEXT']}"]
+  elsif JRUBY
+    s.extensions          = nil
   else
     s.extensions          = FileList["ext/**/extconf.rb"].to_a
   end
