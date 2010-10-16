@@ -15,13 +15,17 @@ Dir['tasks/**/*.rake'].each { |rake| load rake }
 
 task :default => :spec
 
-Rake::ExtensionTask.new('thin_parser', Thin::GemSpec) do |ext|
-  # enable cross compilation (requires cross compile toolchain)
-  ext.cross_compile = true
-  
-  # forces the Windows platform instead of the default one
-  # configure options only for cross compile
-  ext.cross_platform = %w( i386-mswin32 x86-mingw32 )
+if JRUBY
+  task :compile # no-op on jruby
+else
+  Rake::ExtensionTask.new('thin_parser', Thin::GemSpec) do |ext|
+    # enable cross compilation (requires cross compile toolchain)
+    ext.cross_compile = true
+
+    # forces the Windows platform instead of the default one
+    # configure options only for cross compile
+    ext.cross_platform = %w( i386-mswin32 x86-mingw32 )
+  end
 end
 
 CLEAN.include %w(**/*.{o,bundle,jar,so,obj,pdb,lib,def,exp,log} ext/*/Makefile ext/*/conftest.dSYM lib/1.{8,9}})
