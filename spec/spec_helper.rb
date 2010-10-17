@@ -148,7 +148,10 @@ module Helpers
     @server.threaded = options[:threaded]
     @server.timeout = 3
     
-    @thread = Thread.new { @server.start }
+    @thread = Thread.new {
+      Thread.current.abort_on_exception = true
+      @server.start
+    }
     if options[:wait_for_socket]
       wait_for_socket(address, port)
     else
@@ -159,7 +162,7 @@ module Helpers
   
   def stop_server
     @server.stop!
-    @thread.kill
+    @thread.join
     raise "Reactor still running, wtf?" if EventMachine.reactor_running?
   end
   
